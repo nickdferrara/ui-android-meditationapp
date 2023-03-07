@@ -190,7 +190,8 @@ fun FeaturedMeditationSection(features: List<Feature>) {
     ) {
         Text(text = "Featured",
             color = Color.White,
-            style = MaterialTheme.typography.h4,
+            style = MaterialTheme.typography.h5,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(15.dp)
         )
 
@@ -282,7 +283,7 @@ fun FeatureItem(
             Text (
                 text = feature.title,
                 color = Color.White,
-                style = MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.h6,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.align(Alignment.TopStart)
             )
