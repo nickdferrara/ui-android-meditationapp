@@ -24,10 +24,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.nickdferrara.meditationapp.models.Feature
+import com.nickdferrara.meditationapp.models.MenuItem
 import com.nickdferrara.meditationapp.models.standardQuadFromTo
 import com.nickdferrara.meditationapp.ui.theme.*
 
@@ -70,6 +70,13 @@ fun HomeScreen() {
                     Beige3
                 )))
         }
+        BottomMenu(items = listOf(
+            MenuItem("Home", R.drawable.ic_home),
+            MenuItem("Meditate", R.drawable.ic_bubble),
+            MenuItem("Sleep", R.drawable.ic_moon),
+            MenuItem("Music", R.drawable.ic_music),
+            MenuItem("Profile", R.drawable.ic_profile),
+        ), modifier = Modifier.align(Alignment.BottomCenter))
     }
 }
 
@@ -315,6 +322,81 @@ fun FeatureItem(
         }
     }
     
+}
+
+@Composable
+fun BottomMenu(
+    items: List<MenuItem>,
+    modifier: Modifier = Modifier,
+    activeHighlightColor: Color = ButtonBlue,
+    activeTextColor: Color = Color.White,
+    inactiveTextColor: Color = AquaBlue,
+    initialSelectedItem: Int = 0
+) {
+
+    var selectedItemIndex by remember {
+        mutableStateOf(initialSelectedItem)
+    }
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .background(DeepBlue)
+            .padding(15.dp)
+    ) {
+        items.forEachIndexed{ index, item ->
+            BottomMenuItem(
+                item = item,
+                isSelected = index == selectedItemIndex,
+                activeHighlightColor = activeHighlightColor,
+                activeTextColor = activeTextColor,
+                inactiveTextColor = inactiveTextColor
+            ) {
+                selectedItemIndex = index
+            }
+        }
+    }
+}
+
+@Composable
+fun BottomMenuItem(
+    item: MenuItem,
+    isSelected: Boolean = false,
+    activeHighlightColor: Color = ButtonBlue,
+    activeTextColor: Color = Color.White,
+    inactiveTextColor: Color = AquaBlue,
+    onItemClick: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .clickable {
+                onItemClick()
+            }
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .background(if (isSelected) activeHighlightColor else Color.Transparent)
+                .padding(10.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = item.iconId),
+                contentDescription = item.title,
+                tint = if(isSelected) activeTextColor else inactiveTextColor,
+                modifier = Modifier
+                    .size(20.dp)
+            )
+        }
+        Text(
+            text = item.title,
+            color = if (isSelected) activeTextColor else inactiveTextColor
+        )
+    }
 }
 
 
